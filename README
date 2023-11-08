@@ -31,7 +31,9 @@ FIRST SET THE UMASK :
 YOU NEED TO CREATE A USER CALLED TOMCAT :
 # sudo useradd -r -s /usr/sbin/nologin tomcat
 
-MOVE THE TOMCAT FOLDER TO /opt
+UNZIP THE TOMCAT IN /opt FOLDER
+# unzip tomcat.zip && sudo mv tomcat /opt
+
 
 ADD A LOG FOLDER FOR TOMCAT :
 # sudo mkdir /var/log/tomcat
@@ -55,6 +57,10 @@ NOW VERIFY THAT TOMCAT ONLY AS WRITE ACCESS TO TEMP, WORK AND LOGS AND REMOVE AL
 
 
 ADD THE tomcat.service FILE IN /etc/systemd/system/
+# sudo cp tomcat.service /etc/systemd/system/
+# sudo systemctl daemon-reload
+# sudo systemctl enable --now tomcat
+
 
 TO RUN, TOMCAT NEED THE JAVA_HOME VARIABLE POINTING TO THE RIGHT JDK FOLDER
 BY DEFAULT THE FOLDER IS SET IN THE SERVICE FILE AT /usr/lib/jvm/java-19-openjdk-amd64
