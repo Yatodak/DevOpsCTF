@@ -2,7 +2,11 @@ fIRST YOU NEED TO DOWNLOAD THE FILES FROM THE GITHUB :
 https://github.com/Yatodak/DevOpsCTF
 
 
-FOR GUACAMOLE SERVER :
+GUACAMOLE SERVER :
+
+INSTALL ALL DEPENDENCIES :
+# sudo apt install -y libcairo2-dev libjpeg62-dev libpng-dev libtool-bin uuid-dev libpango1.0-dev libssh2-1-dev libssl-dev
+# sudo apt install -y libjpeg-turbo8-dev openjdk-19-jdk
 
 COPY THE GUACAMOLE FOLDER IN /etc
 
@@ -14,12 +18,22 @@ SERVICE FILE LOCATED IN guacd_service NEED TO BE PLACED AT /etc/init.d/
 # sudo cp guacd_service/guacd /etc/init.d/
 DO NOT RENAME THE FILE
 
+
 COPY THE LIBRARIES FILE IN /usr/local/lib
 # sudo cp libraries /usr/local/lib
+# cd /usr/local/lib/
+# sudo rm -f libguac.so.21 && sudo ln -s libguac.so.21.1.0 libguac.so.21
+# sudo rm -f libguac.so && sudo ln -s libguac.so.21.1.0 libguac.so
+# sudo rm -f libguac-terminal.so.0 && sudo ln -s libguac-terminal.so.0.0.0 libguac-terminal.so.0
+# sudo rm -f libguac-terminal.so && sudo ln -s libguac-terminal.so.0.0.0 libguac-terminal.so
+# sudo rm -f libguac-client-ssh.so.0 && sudo ln -s libguac-client-ssh.so.0.0.0 libguac-client-ssh.so.0
+# sudo rm -f libguac-client-ssh.so && sudo ln -s libguac-client-ssh.so.0.0.0 libguac-client-ssh.so
 # sudo ldconfig
 
-FOR GUACAMOLE GUI :
 
+######################################################################################################################################
+
+GUACAMOLE GUI :
 FIRST SET THE UMASK :
 # umask 022
 
