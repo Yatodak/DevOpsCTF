@@ -4,13 +4,19 @@ https://github.com/Yatodak/DevOpsCTF
 
 FOR GUACAMOLE SERVER :
 
+COPY THE GUACAMOLE FOLDER IN /etc
+
 GUACD NEED TO BE PLACED IN /usr/local/sbin
 DO NOT RENAME THE FILE
 
 
 SERVICE FILE LOCATED IN guacd_service NEED TO BE PLACED AT /etc/init.d/
+# sudo cp guacd_service/guacd /etc/init.d/
 DO NOT RENAME THE FILE
 
+COPY THE LIBRARIES FILE IN /usr/local/lib
+# sudo cp libraries /usr/local/lib
+# sudo ldconfig
 
 FOR GUACAMOLE GUI :
 
