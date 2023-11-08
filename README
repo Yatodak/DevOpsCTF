@@ -1,0 +1,52 @@
+fIRST YOU NEED TO DOWNLOAD THE FILES FROM THE GITHUB :
+https://github.com/Yatodak/DevOpsCTF
+
+
+FOR GUACAMOLE SERVER :
+
+GUACD NEED TO BE PLACED IN /usr/local/sbin
+DO NOT RENAME THE FILE
+
+
+SERVICE FILE LOCATED IN guacd_service NEED TO BE PLACED AT /etc/init.d/
+DO NOT RENAME THE FILE
+
+
+FOR GUACAMOLE GUI :
+
+FIRST SET THE UMASK :
+# umask 022
+
+YOU NEED TO CREATE A USER CALLED TOMCAT :
+# sudo useradd -r -s /usr/sbin/nologin tomcat
+
+MOVE THE TOMCAT FOLDER TO /opt
+
+ADD A LOG FOLDER FOR TOMCAT :
+# sudo mkdir /var/log/tomcat
+# sudo chown tomcat:adm /var/log/tomcat
+# sudo chmod 750 /var/log/tomcat
+# sudo chmod g+s /var/log/tomcat
+
+
+REPLACE THE CATALINE LOGS FOLDER WITH THE NEW LOGS FOLDER :
+# cd /opt/tomcat
+# sudo rm -rf logs
+# sudo ln -s /var/log/tomcat /opt/tomcat/logs
+
+NOW CONFIGURE FILE PERMISSIONS :
+# sudo chown -R root:tomcat /opt/tomcat
+# sudo chmod g+r /opt/tomcat/conf/*
+# sudo chmod g+w /opt/tomcat/temp /opt/tomcat/work
+
+NOW VERIFY THAT TOMCAT ONLY AS WRITE ACCESS TO TEMP, WORK AND LOGS AND REMOVE ALL OTHER USER PERMISSIONS TO TOMCAT FOLDER :
+# sudo chmod -R o-rwx /opt/tomcat/
+
+
+ADD THE tomcat.service FILE IN /etc/systemd/system/
+
+TO RUN, TOMCAT NEED THE JAVA_HOME VARIABLE POINTING TO THE RIGHT JDK FOLDER
+BY DEFAULT THE FOLDER IS SET IN THE SERVICE FILE AT /usr/lib/jvm/java-19-openjdk-amd64
+IF YOU HAVE A DIFFERENT FOLDER, YOU NEED TO MODIFY THE ENVIRONEMENT VARIABLE IN THE tomcat.service FILE
+
+
