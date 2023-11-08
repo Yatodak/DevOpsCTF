@@ -5,6 +5,7 @@ https://github.com/Yatodak/DevOpsCTF
 GUACAMOLE SERVER :
 
 INSTALL ALL DEPENDENCIES :
+# sudo apt install -y dialog
 # sudo apt install -y libcairo2-dev libjpeg62-dev libpng-dev libtool-bin uuid-dev libpango1.0-dev libssh2-1-dev libssl-dev
 # sudo apt install -y libjpeg-turbo8-dev openjdk-19-jdk make
 
