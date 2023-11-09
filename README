@@ -10,6 +10,8 @@ INSTALL ALL DEPENDENCIES :
 # sudo apt install -y libjpeg-turbo8-dev openjdk-19-jdk make unzip
 
 COPY THE GUACAMOLE FOLDER IN /etc
+# sudo copy -r guacamole /etc/
+
 
 NOW EXTRACT, BUILD AND INSTALL GUACAMOLE
 # tar xzf guacamole-server-1.5.3.tar.gz
