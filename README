@@ -7,7 +7,7 @@ GUACAMOLE SERVER :
 INSTALL ALL DEPENDENCIES :
 # sudo apt install -y dialog
 # sudo apt install -y libcairo2-dev libjpeg62-dev libpng-dev libtool-bin uuid-dev libpango1.0-dev libssh2-1-dev libssl-dev
-# sudo apt install -y libjpeg-turbo8-dev openjdk-19-jdk make
+# sudo apt install -y libjpeg-turbo8-dev openjdk-19-jdk make unzip
 
 COPY THE GUACAMOLE FOLDER IN /etc
 
@@ -25,15 +25,16 @@ NOW EXTRACT, BUILD AND INSTALL GUACAMOLE
 ######################################################################################################################################
 
 GUACAMOLE GUI :
+
+UNZIP THE TOMCAT IN /opt FOLDER
+# unzip tomcat.zip && sudo mv tomcat /opt
+
+
 FIRST SET THE UMASK :
 # umask 022
 
 YOU NEED TO CREATE A USER CALLED TOMCAT :
 # sudo useradd -r -s /usr/sbin/nologin tomcat
-
-UNZIP THE TOMCAT IN /opt FOLDER
-# unzip tomcat.zip && sudo mv tomcat /opt
-
 
 ADD A LOG FOLDER FOR TOMCAT :
 # sudo mkdir /var/log/tomcat
