@@ -1,0 +1,12 @@
+[Unit]
+Description=CTFd
+After=multi-user.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/CTFd
+Restart=always
+ExecStart=gunicorn --bind 0.0.0.0:8000 -w 4 'CTFd:create_app()'
+
+[Install]
+WantedBy=multi-user.target
