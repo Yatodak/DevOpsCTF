@@ -10,8 +10,9 @@ INSTALL ALL DEPENDENCIES :
 # sudo apt install -y libjpeg-turbo8-dev make unzip
 # sudo apt install -y openjdk-17-jdk
 
-COPY THE GUACAMOLE FOLDER IN /etc
-# sudo copy -r guacamole /etc/
+EXTRACT AND COPY THE GUACAMOLE FOLDER IN /etc
+mkdir /
+# sudo unzip guacamole-config.zip - /etc/guacamole
 
 
 NOW EXTRACT, BUILD AND INSTALL GUACAMOLE
