@@ -47,7 +47,14 @@ _EOF_
 
 ## Let's init the Guacamole DB
 cat schema/*.sql | mysql -uroot -p guacamole_db
+mysql -uroot -p <<_EOF_
+CREATE USER 'guacamole_user'@'localhost' IDENTIFIED BY 'ChangeMe';
+GRANT SELECT,INSERT,UPDATE,DELETE ON guacamole_db.* TO 'guacamole_user'@'localhost';
+FLUSH PRIVILEGES;
+_EOF_
 
+## Modify the password in /etc/guacamole/guacamole.properties
+Modify the mysql-password with the password you set for the guacamole_user
 
 UNZIP THE TOMCAT IN /opt FOLDER
 # unzip tomcat.zip && sudo mv tomcat /opt
