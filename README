@@ -30,6 +30,24 @@ NOW EXTRACT, BUILD AND INSTALL GUACAMOLE
 
 GUACAMOLE GUI :
 
+SETUP THE MARIADB DATABASE
+# sudo apt install -y mariadb
+# sudo systemctl enable --now mariadb
+
+## Enter the next command in one copy/paste in a notepadd and change the root password
+mariadb -uroot <<_EOF_
+UPDATE mysql.user SET Password=PASSWORD('ChangeMe') WHERE User='root';
+DELETE FROM mysql.user WHERE User='';
+DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+DROP DATABASE IF EXISTS test;
+DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
+FLUSH PRIVILEGES;
+_EOF_
+
+## Let's init the Guacamole DB
+cat schema/*.sql | mysql -uroot -p guacamole_db
+
+
 UNZIP THE TOMCAT IN /opt FOLDER
 # unzip tomcat.zip && sudo mv tomcat /opt
 
@@ -68,7 +86,7 @@ ADD THE tomcat.service FILE IN /etc/systemd/system/
 
 
 TO RUN, TOMCAT NEED THE JAVA_HOME VARIABLE POINTING TO THE RIGHT JDK FOLDER
-BY DEFAULT THE FOLDER IS SET IN THE SERVICE FILE AT /usr/lib/jvm/java-19-openjdk-amd64
+BY DEFAULT THE FOLDER IS SET IN THE SERVICE FILE AT /usr/lib/jvm/java-17-openjdk-amd64
 IF YOU HAVE A DIFFERENT FOLDER, YOU NEED TO MODIFY THE ENVIRONEMENT VARIABLE IN THE tomcat.service FILE
 
 
