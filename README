@@ -11,8 +11,7 @@ INSTALL ALL DEPENDENCIES :
 # sudo apt install -y openjdk-17-jdk
 
 EXTRACT AND COPY THE GUACAMOLE FOLDER IN /etc
-mkdir /
-# sudo unzip guacamole-config.zip - /etc/guacamole
+# sudo unzip guacamole-config.zip -d /etc
 
 
 NOW EXTRACT, BUILD AND INSTALL GUACAMOLE
@@ -31,17 +30,19 @@ NOW EXTRACT, BUILD AND INSTALL GUACAMOLE
 GUACAMOLE GUI :
 
 SETUP THE MARIADB DATABASE
-# sudo apt install -y mariadb
+# sudo apt install -y mariadb-server
 # sudo systemctl enable --now mariadb
 
 ## Enter the next command in one copy/paste in a notepadd and change the root password
-mariadb -uroot <<_EOF_
+sudo mariadb -uroot <<_EOF_
 UPDATE mysql.user SET Password=PASSWORD('ChangeMe') WHERE User='root';
+UPDATE mysql.user SET Plugin='mysql_native_password' WHERE User='root';
 DELETE FROM mysql.user WHERE User='';
 DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
 DROP DATABASE IF EXISTS test;
 DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
 FLUSH PRIVILEGES;
+CREATE DATABASE guacamole_db;
 _EOF_
 
 ## Let's init the Guacamole DB
@@ -71,15 +72,19 @@ REPLACE THE CATALINE LOGS FOLDER WITH THE NEW LOGS FOLDER :
 # sudo ln -s /var/log/tomcat /opt/tomcat/logs
 
 NOW CONFIGURE FILE PERMISSIONS :
+# sudo su -
 # sudo chown -R root:tomcat /opt/tomcat
 # sudo chmod g+r /opt/tomcat/conf/*
 # sudo chmod g+w /opt/tomcat/temp /opt/tomcat/work
+# exit
+
 
 NOW VERIFY THAT TOMCAT ONLY AS WRITE ACCESS TO TEMP, WORK AND LOGS AND REMOVE ALL OTHER USER PERMISSIONS TO TOMCAT FOLDER :
 # sudo chmod -R o-rwx /opt/tomcat/
 
 
 ADD THE tomcat.service FILE IN /etc/systemd/system/
+## Return to cloned git folder
 # sudo cp tomcat.service /etc/systemd/system/
 # sudo systemctl daemon-reload
 # sudo systemctl enable --now tomcat
