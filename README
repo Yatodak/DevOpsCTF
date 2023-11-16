@@ -105,7 +105,17 @@ NOW FOR CTFD
 # unzip ctfd.zip && sudo mv CTFd /opt
 
 ### Copy the ctfd service file
+# sudo apt install -y gunicorn build-essential python-dev python3-pip libffi-dev
+# sudo -H pip install -r /opt/CTFd/requirements.txt
 # sudo mv ctfd.service /etc/systemd/system
+
+### Setup Database for CTFd
+mariadb -uroot -p <<_EOF_
+CREATE DATABASE ctfd;
+CREATE USER 'ctfduser'@'localhost' IDENTIFIED BY 'ChangeMe';
+GRANT USAGE ON *.* TO 'ctfduser'@'localhost' IDENTIFIED BY 'ctfd';
+GRANT ALL privileges ON ctfd.* TO 'ctfduser'@'localhost';FLUSH PRIVILEGES;
+_EOF_
 
 
 IF YOU HAVE A DIFFERENT FOLDER, YOU NEED TO MODIFY THE ENVIRONEMENT VARIABLE IN THE tomcat.service FILE
