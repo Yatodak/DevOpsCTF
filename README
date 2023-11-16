@@ -98,7 +98,7 @@ ADD THE tomcat.service FILE IN /etc/systemd/system/
 
 
 TO RUN, TOMCAT NEED THE JAVA_HOME VARIABLE POINTING TO THE RIGHT JDK FOLDER
-BY DEFAULT THE FOLDER IS SET IN THE SERVICE FILE AT /usr/lib/jvm/java-17-openjdk-amd64
+BY DEFAULT THE FOLDER IS SET IN THE SERVICE FILE AT /usr/lib/jvm/java-19-openjdk-amd64
 
 NOW FOR CTFD
 ### Unzip and copy ctfd folder in /opt
