@@ -35,12 +35,7 @@ SETUP THE MARIADB DATABASE
 
 ## Enter the next command in one copy/paste in a notepadd and change the root password
 sudo mariadb -uroot <<_EOF_
-UPDATE mysql.user SET Password=PASSWORD('ChangeMe') WHERE User='root';
-UPDATE mysql.user SET Plugin='mysql_native_password' WHERE User='root';
-DELETE FROM mysql.user WHERE User='';
-DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
-DROP DATABASE IF EXISTS test;
-DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
+SET PASSWORD FOR 'root'@'localhost' = PASSWORD('ChangeMe');
 FLUSH PRIVILEGES;
 CREATE DATABASE guacamole_db;
 _EOF_
@@ -74,8 +69,7 @@ ADD A LOG FOLDER FOR TOMCAT :
 
 
 REPLACE THE CATALINE LOGS FOLDER WITH THE NEW LOGS FOLDER :
-# cd /opt/tomcat
-# sudo rm -rf logs
+# sudo rm -rf /opt/tomcat/logs
 # sudo ln -s /var/log/tomcat /opt/tomcat/logs
 
 NOW CONFIGURE FILE PERMISSIONS :
@@ -104,18 +98,21 @@ NOW FOR CTFD
 ### Unzip and copy ctfd folder in /opt
 # unzip ctfd.zip && sudo mv CTFd /opt
 
-### Copy the ctfd service file
-# sudo apt install -y gunicorn build-essential python-dev python3-pip libffi-dev
-# sudo -H pip install -r /opt/CTFd/requirements.txt
-# sudo mv ctfd.service /etc/systemd/system
-
 ### Setup Database for CTFd
-mariadb -uroot -p <<_EOF_
+sudo mariadb <<_EOF_
 CREATE DATABASE ctfd;
 CREATE USER 'ctfduser'@'localhost' IDENTIFIED BY 'ChangeMe';
 GRANT USAGE ON *.* TO 'ctfduser'@'localhost' IDENTIFIED BY 'ctfd';
 GRANT ALL privileges ON ctfd.* TO 'ctfduser'@'localhost';FLUSH PRIVILEGES;
 _EOF_
+
+### Copy the ctfd service file
+# sudo apt install -y gunicorn build-essential python-dev python3-pip libffi-dev
+# sudo -H pip install -r /opt/CTFd/requirements.txt
+# sudo -H pip install -U pyopenssl cryptography
+# sudo mv ctfd.service /etc/systemd/system
+# sudo systemctl daemon-reload && sudo systemctl enable --now ctfd
+
 
 
 IF YOU HAVE A DIFFERENT FOLDER, YOU NEED TO MODIFY THE ENVIRONEMENT VARIABLE IN THE tomcat.service FILE
