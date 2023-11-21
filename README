@@ -34,15 +34,15 @@ SETUP THE MARIADB DATABASE
 # sudo systemctl enable --now mariadb
 
 ## Enter the next command in one copy/paste in a notepadd and change the root password
-sudo mariadb -uroot <<_EOF_
+sudo mariadb <<_EOF_
 SET PASSWORD FOR 'root'@'localhost' = PASSWORD('ChangeMe');
 FLUSH PRIVILEGES;
 CREATE DATABASE guacamole_db;
 _EOF_
 
 ## Let's init the Guacamole DB
-cat schema/*.sql | mysql -uroot -p guacamole_db
-mysql -uroot -p <<_EOF_
+cat schema/*.sql | sudo mysql guacamole_db
+sudo mysql <<_EOF_
 CREATE USER 'guacamole_user'@'localhost' IDENTIFIED BY 'ChangeMe';
 GRANT SELECT,INSERT,UPDATE,DELETE ON guacamole_db.* TO 'guacamole_user'@'localhost';
 FLUSH PRIVILEGES;
