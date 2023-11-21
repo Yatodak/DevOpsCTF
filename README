@@ -96,7 +96,8 @@ BY DEFAULT THE FOLDER IS SET IN THE SERVICE FILE AT /usr/lib/jvm/java-19-openjdk
 
 NOW FOR CTFD
 ### Unzip and copy ctfd folder in /opt
-# unzip ctfd.zip && sudo mv CTFd /opt
+# sudo cp CTFd /opt
+# sudo chown -R root:root /opt/CTFd
 
 ### Setup Database for CTFd
 sudo mariadb <<_EOF_
@@ -106,7 +107,7 @@ GRANT USAGE ON *.* TO 'ctfduser'@'localhost' IDENTIFIED BY 'ctfd';
 GRANT ALL privileges ON ctfd.* TO 'ctfduser'@'localhost';FLUSH PRIVILEGES;
 _EOF_
 
-### Copy the ctfd service file
+### Install the CTFd dependencies
 # sudo apt install -y gunicorn build-essential python-dev python3-pip libffi-dev
 # sudo -H pip install -r /opt/CTFd/requirements.txt
 # sudo -H pip install -U pyopenssl cryptography
