@@ -96,7 +96,7 @@ BY DEFAULT THE FOLDER IS SET IN THE SERVICE FILE AT /usr/lib/jvm/java-19-openjdk
 
 NOW FOR CTFD
 ### Unzip and copy ctfd folder in /opt
-# sudo cp CTFd /opt
+# sudo cp -r CTFd /opt
 # sudo chown -R root:root /opt/CTFd
 
 ### Setup Database for CTFd
