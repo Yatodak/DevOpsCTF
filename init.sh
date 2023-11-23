@@ -115,11 +115,11 @@ lsblk -pdo NAME,SIZE
 read -p $'Which \e[31Disk\e[0m do you want to use for \e[31mLXD ZFS Pool\e[0m (Full path, ex: /dev/sdx) '
 disklocation=$REPLY 
 sed -i '/source:/ s/$/ $disklocation/' lxd_config.yaml
-cat lxd_config.yaml | sudo lxd init -preseed
+cat lxd_config.yaml | sudo lxd init --preseed
 
 echo "Launching one container for testing purpose"
-lxc launch ubuntu:22.04 test_script
-lxc rm -f test_script
+lxc launch ubuntu:22.04 testvm
+lxc rm -f testvm
 
 
 echo "Finished ! displaying the status of all services"
