@@ -114,7 +114,7 @@ echo "Displaying disk informations"
 lsblk -pdo NAME,SIZE
 read -p $'Which \e[31mDisk\e[0m do you want to use for \e[31mLXD ZFS Pool\e[0m (Full path, ex: /dev/sdx) '
 disklocation=$REPLY 
-sed -i '/source:/ s/$/ $disklocation/' lxd_config.yaml
+sed -i "/source:/ s/$/ $disklocation/" lxd_config.yaml
 cat lxd_config.yaml | sudo lxd init --preseed
 
 echo "Launching one container for testing purpose"
