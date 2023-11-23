@@ -119,6 +119,7 @@ cat lxd_config.yaml | sudo lxd init --preseed
 
 echo "Launching one container for testing purpose"
 lxc launch ubuntu:22.04 testvm
+lxc list
 lxc rm -f testvm
 
 
