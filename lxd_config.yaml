@@ -9,7 +9,7 @@ networks:
   project: default
 storage_pools:
 - config:
-    source: $disklocation
+    source:
   description: ""
   name: default
   driver: zfs
