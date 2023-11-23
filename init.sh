@@ -124,5 +124,4 @@ lxc rm -f testvm
 
 
 echo "Finished ! displaying the status of all services"
-sudo systemctl restart ctfd
 systemctl status tomcat ctfd guacd mariadb
