@@ -7,7 +7,7 @@ sudo apt install -y gunicorn build-essential  python-dev-is-python3 python3-pip 
 
 echo "Starting configuration of MariaDB for Guacamole and CTFd"
 
-read -s -p $'What \e[31musername\e[0m do you want for \e[31mroot\e[0m DB User ? '
+read -s -p $'What \e[31mpassword\e[0m do you want for \e[31mroot\e[0m DB User ? '
 rootpass=$REPLY
 echo ''
 
@@ -80,11 +80,9 @@ sudo rm -rf /opt/tomcat/logs
 sudo ln -s /var/log/tomcat /opt/tomcat/logs
 
 echo "Adding just enough permission to tomcat files for it to work"
-sudo su -
 sudo chown -R root:tomcat /opt/tomcat
-sudo chmod g+r /opt/tomcat/conf/*
+sudo chmod -R g+r /opt/tomcat/conf/
 sudo chmod g+w /opt/tomcat/temp /opt/tomcat/work
-exit
 sudo chmod -R o-rwx /opt/tomcat/
 
 echo "Sending Service file to systemd and starting Tomcat"
