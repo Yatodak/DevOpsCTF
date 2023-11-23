@@ -65,7 +65,7 @@ sudo sed -i "/mysql-password:/ s/$/ $guacpass/" /etc/guacamole/guacamole.propert
 
 Echo "Starting Guacamole GUI configuration (Tomcat...)"
 echo "Sending Tomcat app to opt folder"
-unzip tomcat.zip -d /opt
+sudo unzip tomcat.zip -d /opt
 
 echo "Setting default umask"
 umask 022
