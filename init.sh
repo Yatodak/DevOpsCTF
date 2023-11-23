@@ -33,7 +33,7 @@ CREATE DATABASE guacamole_db;
 CREATE USER '$guacuser'@'localhost' IDENTIFIED BY '$guacpass';
 GRANT SELECT,INSERT,UPDATE,DELETE ON guacamole_db.* TO '$guacuser'@'localhost';
 CREATE DATABASE ctfd;
-CREATE USER '$ctfduser'@'localhost' IDENTIFIED BY '$ctfpass';
+CREATE USER '$ctfduser'@'localhost' IDENTIFIED BY '$ctfdpass';
 GRANT ALL privileges ON ctfd.* TO '$ctfduser'@'localhost';
 FLUSH PRIVILEGES;
 _EOF_
