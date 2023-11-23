@@ -1,9 +1,8 @@
 echo "### Installing dependencies ###"
 sudo apt update
-sudo apt install -y dialog openjdk-19-jdk mariadb-server make unzip
+sudo apt install -y dialog openjdk-19-jdk mariadb-server make unzip gunicorn build-essential  python-dev-is-python3 python3-pip libffi-dev
 sudo apt install -y libcairo2-dev libjpeg62-dev libpng-dev libtool-bin uuid-dev libpango1.0-dev libssh2-1-dev libssl-dev
 sudo apt install -y libjpeg-turbo8-dev 
-sudo apt install -y gunicorn build-essential  python-dev-is-python3 python3-pip libffi-dev
 
 echo "Starting configuration of MariaDB for Guacamole and CTFd"
 
