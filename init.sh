@@ -135,15 +135,19 @@ lxc rm -f testvm
 echo "Install and configuration of Nginx as a reverse proxy"
 
 echo "Creating Self-Signed Certificate by default"
+
+sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
+sudo cp default.nginx /etc/nginx/sites-available/default
+
 sudo mkdir /etc/nginx/private
-sudo cd /etc/nginx/private
+cd /etc/nginx/private
 echo "Please enter Self Signed certificate informations"
 sudo openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out certificate.pem
+
 cd $start_location
-sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
-sudo cp default.nginx /etc/nginx/sites-available/default
-sed -i "s/your_servername/$servername/g" /etc/nginx/sites-available/default 
-sed -i "s/your_ip/$server_ip/g" /etc/nginx/sites-available/default 
+sudo sed -i "s/your_servername/$servername/g" /etc/nginx/sites-available/default 
+sudo sed -i "s/your_ip/$server_ip/g" /etc/nginx/sites-available/default 
+
 sudo systemctl restart nginx
 
 echo "Finished ! displaying the status of all services"
