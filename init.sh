@@ -1,8 +1,10 @@
 echo "### Installing dependencies ###"
 sudo apt update
-sudo apt install -y dialog openjdk-19-jdk mariadb-server make unzip gunicorn build-essential  python-dev-is-python3 python3-pip libffi-dev
+sudo apt install -y dialog openjdk-19-jdk mariadb-server make unzip gunicorn build-essential  python-dev-is-python3 python3-pip libffi-dev nginx
 sudo apt install -y libcairo2-dev libjpeg62-dev libpng-dev libtool-bin uuid-dev libpango1.0-dev libssh2-1-dev libssl-dev
 sudo apt install -y libjpeg-turbo8-dev 
+
+start_location = pwd
 
 echo "Starting configuration of MariaDB for Guacamole and CTFd"
 
@@ -23,6 +25,14 @@ ctfduser=$REPLY
 read -s -p $'What \e[31mpassword\e[0m do you want for \e[31mctfd\e[0m DB User ? '
 echo ''
 ctfdpass=$REPLY
+
+read -s -p $'What \e[31mServerName\e[0m do you want for \e[31myour server\e[0m ? '
+echo ''
+servername=$REPLY
+
+read -s -p $'What\'s the \e[31mIp Adress\e[0m of \e[31myour server\e[0m ? '
+echo ''
+server_ip=$REPLY
 
 echo "Creating Databases and DBUser for both apps"
 echo "Adding privileges to DBUser on BDD"
@@ -122,6 +132,20 @@ lxc launch ubuntu:22.04 testvm
 lxc list
 lxc rm -f testvm
 
+
+echo "Install and configuration of Nginx as a reverse proxy"
+
+echo "Creating Self-Signed Certificate by default"
+sudo mkdir /etc/nginx/private
+sudo cd /etc/nginx/private
+echo "Please enter Self Signed certificate informations"
+sudo openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out certificate.pem
+cd $start_location
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
+sudo cp config.nginx /etc/nginx/sites-available/default
+sed -i "s/your_servername/$servername/g" /etc/nginx/sites-available/default 
+sed -i "s/your_ip/$server_ip/g" /etc/nginx/sites-available/default 
+sudo systemctl restart nginx
 
 echo "Finished ! displaying the status of all services"
 systemctl status tomcat ctfd guacd mariadb
