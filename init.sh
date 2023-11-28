@@ -26,12 +26,10 @@ read -s -p $'What \e[31mpassword\e[0m do you want for \e[31mctfd\e[0m DB User ? 
 echo ''
 ctfdpass=$REPLY
 
-read -s -p $'What \e[31mServerName\e[0m do you want for \e[31myour server\e[0m ? '
-echo ''
+read -p $'What \e[31mServerName\e[0m do you want for \e[31myour server\e[0m ? '
 servername=$REPLY
 
-read -s -p $'What\'s the \e[31mIp Adress\e[0m of \e[31myour server\e[0m ? '
-echo ''
+read -p $'What\'s the \e[31mIp Adress\e[0m of \e[31myour server\e[0m ? '
 server_ip=$REPLY
 
 echo "Creating Databases and DBUser for both apps"
