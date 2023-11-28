@@ -89,6 +89,7 @@ sudo ln -s /var/log/tomcat /opt/tomcat/logs
 echo "Adding just enough permission to tomcat files for it to work"
 sudo chown -R root:tomcat /opt/tomcat
 sudo chmod -R g+r /opt/tomcat/conf/
+sudo chmod ug+x /opt/tomcat/bin/*.sh
 sudo chmod g+w /opt/tomcat/temp /opt/tomcat/work
 sudo chmod -R o-rwx /opt/tomcat/
 
@@ -140,7 +141,7 @@ echo "Please enter Self Signed certificate informations"
 sudo openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out certificate.pem
 cd $start_location
 sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
-sudo cp config.nginx /etc/nginx/sites-available/default
+sudo cp default.nginx /etc/nginx/sites-available/default
 sed -i "s/your_servername/$servername/g" /etc/nginx/sites-available/default 
 sed -i "s/your_ip/$server_ip/g" /etc/nginx/sites-available/default 
 sudo systemctl restart nginx
