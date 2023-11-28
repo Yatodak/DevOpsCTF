@@ -47,7 +47,10 @@ FLUSH PRIVILEGES;
 _EOF_
 
 echo "Sending schema with guacadmin default user to MariaDB"
-cat schema/*.sql | sudo mysql guacamole_db
+cat schema/*.sql | sudo mariadb guacamole_db
+
+echo "Sending CTFD schema with default config to MariaDB"
+cat DB_EXPORT_CTFD.sql | sudo mariadb ctfd
 
 
 echo "Starting configuration of Guacamole Server"
