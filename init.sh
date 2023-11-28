@@ -89,7 +89,7 @@ sudo ln -s /var/log/tomcat /opt/tomcat/logs
 echo "Adding just enough permission to tomcat files for it to work"
 sudo chown -R root:tomcat /opt/tomcat
 sudo chmod -R g+r /opt/tomcat/conf/
-sudo chmod ug+x /opt/tomcat/bin/*.sh
+sudo find /opt/tomcat/bin/ -iname "*.sh" -exec chmod ug+x {} \;
 sudo chmod g+w /opt/tomcat/temp /opt/tomcat/work
 sudo chmod -R o-rwx /opt/tomcat/
 
