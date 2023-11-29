@@ -19,7 +19,7 @@ password=$2
 # Créer les machines virtuelles
 #for ((i=1; i<=$num_vms; i++)); do
     vm_name="CTF-$1"
-    lxc launch ubuntu:22.04 $vm_name
+    lxc launch ubuntu:22.04 --vm $vm_name
     sleep 5
     echo "La machine virtuelle $vm_name a été créée avec succès."
 # On donne toutes les permissions pour se connecter a notre machine en ssh
@@ -29,6 +29,7 @@ password=$2
     echo "PasswordAuthentication activé pour $vm_name"
     lxc exec $vm_name -- service ssh restart
     echo "Service SSH Relancé"
+    lxc config set $vm_name limits.memory 500MB
     lxc_ip="$(lxc list | grep $vm_name | egrep -o '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')"
     echo "L'adresse IP de l'instance de ${username} est ${lxc_ip}"
     echo "Adding connection profile to Guacamole"
