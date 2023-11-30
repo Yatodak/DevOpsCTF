@@ -19,9 +19,15 @@ password=$2
 # Créer les machines virtuelles
 #for ((i=1; i<=$num_vms; i++)); do
     vm_name="CTF-$1"
-    lxc launch ubuntu:22.04 --vm $vm_name
-    sleep 5
+    lxc launch ctf-instance --vm $vm_name
+    lxc_ip="$(lxc list | grep $vm_name | egrep -o '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')"
     echo "La machine virtuelle $vm_name a été créée avec succès."
+    while [ -z $lxc_ip ]
+    do
+        lxc_ip="$(lxc list | grep $vm_name | egrep -o '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')"
+        sleep 1
+    done
+    echo "La machine a correctement démarré"
 # On donne toutes les permissions pour se connecter a notre machine en ssh
     lxc exec $vm_name -- useradd -m -p "$(openssl passwd -1 $2)" $username
     echo "L'utilisateur $username a bien été créé dans l'instance"
