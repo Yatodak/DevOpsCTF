@@ -29,7 +29,7 @@ password=$2
     echo "PasswordAuthentication activé pour $vm_name"
     lxc exec $vm_name -- service ssh restart
     echo "Service SSH Relancé"
-    lxc config set $vm_name limits.memory 500MB
+    lxc config set $vm_name limits.memory 900MB
     lxc_ip="$(lxc list | grep $vm_name | egrep -o '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')"
     echo "L'adresse IP de l'instance de ${username} est ${lxc_ip}"
     echo "Adding connection profile to Guacamole"
