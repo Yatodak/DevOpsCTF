@@ -8,6 +8,7 @@ from CTFd.utils.decorators import admins_only
 from CTFd.utils.modes import TEAMS_MODE
 import CTFd.utils.user.lxc_launch as launcher
 
+
 @admin.route("/admin/users")
 @admins_only
 def users_listing():
@@ -78,7 +79,8 @@ def users_detail(user_id):
 
     # Get IP addresses that the User has used
     addrs = (
-        Tracking.query.filter_by(user_id=user_id).order_by(Tracking.date.desc()).all()
+        Tracking.query.filter_by(user_id=user_id).order_by(
+            Tracking.date.desc()).all()
     )
 
     # Get Fails
@@ -95,9 +97,6 @@ def users_detail(user_id):
     else:
         score = None
         place = None
-
-
-    launcher.create_lxc_vm("nite", "firerat")
 
     return render_template(
         "admin/users/user.html",
