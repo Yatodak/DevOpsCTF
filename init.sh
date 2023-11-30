@@ -153,5 +153,4 @@ sudo sed -i "s/your_ip/$server_ip/g" /etc/nginx/sites-available/default
 
 sudo systemctl restart nginx
 
-echo "Finished ! displaying the status of all services"
-systemctl status tomcat ctfd guacd mariadb
+echo "Finished ! Don't forget to download the instance image before registering in ctfd, or else your instance will not be created"
