@@ -6,7 +6,7 @@ After=multi-user.target
 Type=simple
 WorkingDirectory=/opt/CTFd
 Restart=always
-ExecStart=gunicorn --bind 0.0.0.0:8000 -t 200 -w 4 'CTFd:create_app()'
+ExecStart=gunicorn  --bind 0.0.0.0:8000 -t 50 -k gevent -w 4 'CTFd:create_app()'
 
 [Install]
 WantedBy=multi-user.target
