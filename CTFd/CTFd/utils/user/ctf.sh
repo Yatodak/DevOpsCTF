@@ -29,7 +29,7 @@ password=$2
     done
     echo "La machine a correctement démarré"
 # On donne toutes les permissions pour se connecter a notre machine en ssh
-    lxc exec $vm_name -- useradd -m -p "$(openssl passwd -1 $2)" $username
+    lxc exec $vm_name -- useradd -m -s /bin/bash -p "$(openssl passwd -1 $2)" $username
     echo "L'utilisateur $username a bien été créé dans l'instance"
     lxc exec $vm_name -- sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
     echo "PasswordAuthentication activé pour $vm_name"
