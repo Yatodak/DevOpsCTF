@@ -20,7 +20,7 @@ vm_name="CTF-$1"
 lxc launch ctf-instance -c limits.memory=512MB $vm_name 
 echo "La machine virtuelle $vm_name a été créée avec succès."
 
-# Attendre que la machine démarre normalement, if ip recup -> on avance
+# Attendre que la machine démarre normalement, if uplink -> on avance
 lxc_ip="$(lxc list | grep $vm_name | egrep -o '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')"
     while [ -z $lxc_ip ]
     do
