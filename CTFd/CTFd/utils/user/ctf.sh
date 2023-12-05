@@ -17,7 +17,7 @@ password=$2
 vm_name="CTF-$1"
 
 # Création de l'instance en limitant la mémoire
-lxc launch ctf-instance -c limits.memory=512MB $vm_name 
+lxc launch ctf-instance -c limits.memory=900MB $vm_name 
 echo "La machine virtuelle $vm_name a été créée avec succès."
 
 # Attendre que la machine démarre normalement, if uplink -> on avance
@@ -36,7 +36,7 @@ lxc_ip="$(lxc list | grep $vm_name | egrep -o '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')"
     lxc exec $vm_name -- sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
     echo "PasswordAuthentication activé pour $vm_name"
     
-    lxc exec $vm_name -- bash -c 'echo "myuser ALL=(ALL) NOPASSWD: /opt/script.sh" >> /etc/sudoers'
+    lxc exec $vm_name -- bash -c "echo \"$username ALL=(ALL) NOPASSWD: /opt/script.sh\" >> /etc/sudoers"
     echo "Droits Sudoers ajouté dans $vm_name"
     
     lxc exec $vm_name -- service ssh restart
