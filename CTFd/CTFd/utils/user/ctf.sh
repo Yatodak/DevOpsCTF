@@ -11,6 +11,7 @@ if [ "$#" -ne 2 ]; then
     echo "Usage: $0 <nombre_de_machines_virtuelles> <mot_de_passe>"
     exit 1
 fi
+
 username=$1
 password=$2
 
@@ -18,24 +19,28 @@ password=$2
 #num_vms=$1
 # Créer les machines virtuelles
 #for ((i=1; i<=$num_vms; i++)); do
-    vm_name="CTF-$1"
-    lxc launch ctf-instance --vm $vm_name
-    lxc_ip="$(lxc list | grep $vm_name | egrep -o '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')"
-    echo "La machine virtuelle $vm_name a été créée avec succès."
+vm_name="CTF-$1"
+lxc launch ctf-instance -c limits.memory=512MB $vm_name 
+echo "La machine virtuelle $vm_name a été créée avec succès."
+
+# Attendre que la machine démarre normalement, quand ip recup -> on avance
+lxc_ip="$(lxc list | grep $vm_name | egrep -o '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')"
     while [ -z $lxc_ip ]
     do
         lxc_ip="$(lxc list | grep $vm_name | egrep -o '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')"
         sleep 1
     done
-    echo "La machine a correctement démarré"
-# On donne toutes les permissions pour se connecter a notre machine en ssh
-    lxc exec $vm_name -- useradd -m -s /bin/bash -p "$(openssl passwd -1 $2)" $username
+    echo "La machine a correctement démarré, ip récupérée"
+
+# Personnalisation de l'instance pour l'utilisateur
+    lxc exec $vm_name -- useradd -m -s /bin/bash -p "$(openssl passwd -1 $password)" $username
     echo "L'utilisateur $username a bien été créé dans l'instance"
     lxc exec $vm_name -- sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
     echo "PasswordAuthentication activé pour $vm_name"
+    lxc exec $vm_name -- bash -c 'echo "myuser ALL=(ALL) NOPASSWD: /opt/script.sh" >> /etc/sudoers'
+    echo "Droits Sudoers ajouté dans $vm_name"
     lxc exec $vm_name -- service ssh restart
     echo "Service SSH Relancé"
-    lxc config set $vm_name limits.memory 900MB
     lxc_ip="$(lxc list | grep $vm_name | egrep -o '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')"
     echo "L'adresse IP de l'instance de ${username} est ${lxc_ip}"
     echo "Adding connection profile to Guacamole"
