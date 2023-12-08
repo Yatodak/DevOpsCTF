@@ -37,10 +37,13 @@ lxc_ip="$(lxc list | grep $vm_name | egrep -o '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')"
     echo "PasswordAuthentication activé pour $vm_name"
     
     lxc exec $vm_name -- bash -c "echo \"$username ALL=(ALL) NOPASSWD: /opt/script.sh\" >> /etc/sudoers"
-    lxc exec $vm_name -- bash -c "echo \"$username ALL=(ALL) NOPASSWD: /home/$username/verif_infra.sh\" >> /etc/sudoers"
-    lxc exec $vm_name -- bash -c "echo \"$username ALL=(ALL) NOPASSWD: /home/$username/ansible/install_ansible.sh\" >> /etc/sudoers"
+    lxc exec $vm_name -- bash -c "echo \"$username ALL=(ALL) NOPASSWD: /usr/bin/sh /home/$username/verif_infra.sh\" >> /etc/sudoers"
+    lxc exec $vm_name -- bash -c "echo \"$username ALL=(ALL) NOPASSWD: /usr/bin/sh /home/$username/ansible/install_ansible.sh\" >> /etc/sudoers"
+    lxc exec $vm_name -- bash -c "echo \"$username ALL=(ALL) NOPASSWD: /usr/bin/sh verif_infra.sh\" >> /etc/sudoers"
+    lxc exec $vm_name -- bash -c "echo \"$username ALL=(ALL) NOPASSWD: /usr/bin/sh ansible/install_ansible.sh\" >> /etc/sudoers"
+    lxc exec $vm_name -- bash -c "echo \"$username ALL=(ALL) NOPASSWD: /usr/bin/sh install_ansible.sh\" >> /etc/sudoers"
     echo "Droits Sudoers ajouté dans $vm_name"
-    
+
     lxc exec $vm_name -- service ssh restart
     echo "Service SSH Relancé"
     echo "L'adresse IP de l'instance de ${username} est ${lxc_ip}"
