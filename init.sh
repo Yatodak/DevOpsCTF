@@ -2,7 +2,7 @@ echo "### Installing dependencies ###"
 sudo apt update
 sudo apt install -y dialog openjdk-19-jdk mariadb-server make unzip gunicorn build-essential  python-dev-is-python3 python3-pip libffi-dev nginx
 sudo apt install -y libcairo2-dev libjpeg62-dev libpng-dev libtool-bin uuid-dev libpango1.0-dev libssh2-1-dev libssl-dev
-sudo apt install -y libjpeg-turbo8-dev 
+sudo apt install -y libjpeg-turbo8-dev
 
 start_location = pwd
 
@@ -120,37 +120,36 @@ echo "Sending Service file to systemd and starting ctfd"
 sudo mv ctfd.service /etc/systemd/system
 sudo systemctl daemon-reload && sudo systemctl enable --now ctfd
 
-
-echo "starting LXD configuration"
-echo "Displaying disk informations"
-lsblk -pdo NAME,SIZE
-read -p $'Which \e[31mDisk\e[0m do you want to use for \e[31mLXD ZFS Pool\e[0m (Full path, ex: /dev/sdx) '
-disklocation=${REPLY//\//\\\/} # echape les barres obliques 
-sudo sed -i "/source:/ s/$/ $disklocation/" ./lxd_config.yaml
-cat lxd_config.yaml | sudo lxd init --preseed
-
-echo "Launching one container for testing purpose"
-lxc launch ubuntu:22.04 testvm
-lxc list
-lxc rm -f testvm
-
-
 echo "Install and configuration of Nginx as a reverse proxy"
-
-echo "Creating Self-Signed Certificate by default"
 
 sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
 sudo cp default.nginx /etc/nginx/sites-available/default
 
+echo "Creating Self-Signed Certificate by default"
 sudo mkdir /etc/nginx/private
 cd /etc/nginx/private
 echo "Please enter Self Signed certificate informations"
 sudo openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out certificate.pem
 
 cd $start_location
-sudo sed -i "s/your_servername/$servername/g" /etc/nginx/sites-available/default 
-sudo sed -i "s/your_ip/$server_ip/g" /etc/nginx/sites-available/default 
+sudo sed -i "s/your_servername/$servername/g" /etc/nginx/sites-available/default
+sudo sed -i "s/your_ip/$server_ip/g" /etc/nginx/sites-available/default
 
 sudo systemctl restart nginx
+
+
+echo "starting LXD configuration"
+echo "Displaying disk informations"
+lsblk -pdo NAME,SIZE
+read -p $'Which \e[31mDisk\e[0m do you want to use for \e[31mLXD ZFS Pool\e[0m (Full path, ex: /dev/sdx) '
+disklocation=${REPLY//\//\\\/} # echape les barres obliques
+sudo sed -i "/source:/ s/$/ $disklocation/" ./lxd_config.yaml
+cat lxd_config.yaml | sudo lxd init --preseed
+lxc profile set default cloud-init.network-config '{ "version": 2, "ethernets": { "enp5s0": { "dhcp4": true, "dhcp-identifier": "mac" } } }'
+
+echo "Launching one container for testing purpose"
+lxc launch ubuntu:22.04 testvm
+lxc list
+lxc rm -f testvm
 
 echo "Finished ! Don't forget to download the instance image before registering in ctfd, or else your instance will not be created"
