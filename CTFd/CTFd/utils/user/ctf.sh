@@ -30,13 +30,15 @@ lxc_ip="$(lxc list | grep $vm_name | egrep -o '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')"
     echo "La machine a correctement démarré, ip récupérée"
 
 # Personnalisation de l'instance pour l'utilisateur
-    lxc exec $vm_name -- useradd -m -s /bin/bash -p "$(openssl passwd -1 $password)" $username
+    lxc exec $vm_name -- useradd -m -g docker -s /bin/bash -p "$(openssl passwd -1 $password)" $username
     echo "L'utilisateur $username a bien été créé dans l'instance"
-
+    lxc exec $vm_name -- bash -c "unzip -X /opt/toplay.zip -d /home/$username/"
     lxc exec $vm_name -- sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
     echo "PasswordAuthentication activé pour $vm_name"
     
     lxc exec $vm_name -- bash -c "echo \"$username ALL=(ALL) NOPASSWD: /opt/script.sh\" >> /etc/sudoers"
+    lxc exec $vm_name -- bash -c "echo \"$username ALL=(ALL) NOPASSWD: /home/$username/verif_infra.sh\" >> /etc/sudoers"
+    lxc exec $vm_name -- bash -c "echo \"$username ALL=(ALL) NOPASSWD: /home/$username/ansible/install_ansible.sh\" >> /etc/sudoers"
     echo "Droits Sudoers ajouté dans $vm_name"
     
     lxc exec $vm_name -- service ssh restart
