@@ -124,7 +124,7 @@ CREATE TABLE `challenges` (
   PRIMARY KEY (`id`),
   KEY `next_id` (`next_id`),
   CONSTRAINT `challenges_ibfk_1` FOREIGN KEY (`next_id`) REFERENCES `challenges` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,7 +133,7 @@ CREATE TABLE `challenges` (
 
 LOCK TABLES `challenges` WRITE;
 /*!40000 ALTER TABLE `challenges` DISABLE KEYS */;
-INSERT INTO `challenges` VALUES (1,'Fichier manquant ','Il manque un fichier lors de la connexion, trouvez le fichier manquant et resolvez les erreurs qui surviennent',0,50,'tqt','standard','hidden',NULL,NULL,NULL),(2,'Fichier manquant ','Il manque un fichier lors de la connexion, trouvez le fichier manquant et resolvez les erreurs qui surviennent',0,50,'tqt','standard','visible',NULL,NULL,NULL);
+INSERT INTO `challenges` VALUES (4,'Le fichier manquant','Lors de votre connexion à la machine, vous remarquerez qu\'une erreur survient, resolvez cette erreur et revenez avec la bonne réponse !\r\n\r\nPS :Le fichier doit contenir une date importante pour le groupe que ce fichier représente',0,50,'Mon premier Flag','standard','visible',NULL,NULL,NULL),(5,'Docker-Compose','Parfait, la date est maintenant validée et une archive à été ajoutée à votre espace de travail !\r\n\r\nVous pouvez donc maintenant démarrer l\'installation du blog de Synapsys, pour ce faire, tout est déjà prêt (dans l\'archive) il faut juste lancer le Docker-Compose et le squellette du blog sera prêt (ou pas)\r\n\r\n**N\'oubliez pas d\'importer la base de données fournie**\r\n**N\'oubliez pas d\'importer les plugins de base fourni dans le dossier**\r\nLes plugins sont activé par défaut, il suffit de l\'ajouter dans le bon dossier\r\n\r\nPour valider ce challenge, entrez le premier titre de la page d\'index du site\r\n\r\nPs : Pour afficher la page du wordpress depuis un navigateur, vous avez l\'outil lynx et curl à votre disposition',0,75,'Déploiement de WordPress','standard','visible','{\"prerequisites\": [4], \"anonymize\": true}',NULL,6),(6,'Script Ansible','Nous allons avoir besoin d\'Ansible\r\n\r\npour l\'installer le build nous a préparé un script bien détaillé !\r\n\r\nutiliser le avec sudo pour installer Ansible sans erreur !\r\n\r\npour valider que l\'installation s\'est bien passée, entrez le nom du paquet qui s\'est installé qui n\'est utile que dans le cas d\'utilisation d\'une machine type RedHat ou RockyLinux',0,50,'Mon premier article','standard','visible','{\"prerequisites\": [5], \"anonymize\": true}',NULL,7),(7,'Playbook Ansible','Maintenant que le Wordpress est fonctionnel et qu\'Ansible fonctionne :\r\n\r\nLe Build nous a préparé un script Ansible qui nous permet de publier un post sur le wordpress automatiquement\r\n\r\nAllez vous du côté des playbooks présent dans le dossier, et ajoutez un article sur le blog\r\n\r\nIl semblerai que quelqu\'un ai fait une modification de dernière minute sur le fichier...\r\n\r\nla modification à effectuer dans le script est la clé permettant de compléter ce challenge !',0,50,'Mon premier article','standard','visible','{\"prerequisites\": [5, 6]}',NULL,9),(8,'Lynx','Cette carte va vous permettre de découvrir le fonctionnement de l\'outil Lynx ! (et de gagner des points par la même occasion)\r\n\r\nPour ce faire vous devrez trouvez en accédant au Wordpress via lynx le nom du chien de notre Mécanicien préféré ! ',0,15,'Divers','standard','visible','{\"prerequisites\": [5]}',NULL,NULL),(9,'HaProxy','Notre site est prêt, les articles sont postés !\r\n\r\nLa période noêl arrive ! (elle est déjà là)\r\n\r\nNous ne souhaiterions pas que notre blog se retrouve surchargé suite à un afflut trop important de personnes sur notre unique Wordpress\r\n\r\nNous devons donc mettre en place un LoadBalancer : \r\n-> Le choix s\'est porté vers HaProxy avec le tag latest\r\n\r\nle build nous a fourni dans un dossier nommé **haproxy** qui comporte le fichier de configuration de HaProxy (haproxy.cfg)\r\n\r\nMalheureusement ils sont tous partis en congés et ont oublié de nous envoyer la configuration du Docker-Compose contenant la configuration des 2 nouveaux services, cette configuration doit surement pouvoir se déduire.\r\n\r\nPar contre ils nous envoyé un script permettant de vérifier l\'infrastructure. Une fois que le LoadBalancer est déployé, lancer le script verif_infra.sh pour récupérer un code qui permettra de valider ce challenge',0,50,'High availability','standard','visible','{\"prerequisites\": [5, 6, 7]}',NULL,NULL),(10,'HaProxy - Admin (Bonus)','Si tu cherche un endroit ou mettre un flag parlant d\'un port spécifique, c\'est ici !',0,50,'High availability','standard','visible','{\"prerequisites\": [5, 6, 7, 9]}',NULL,NULL),(11,'Adresse MAC','Pour des raison de sécurité, le pare-feu nécessite d\'avoir l\'adresse MAC du conteneur à exposer sur le WAN\r\n\r\nRécupérez l\'adresse MAC du conteneur exposé et notez là ici',0,50,'Divers','standard','visible','{\"prerequisites\": [5, 6, 7, 9]}',NULL,12),(12,'Ansible Syntax-check','Petit test pratique pour vérifier que votre oeil est encore bon pour trouver les erreurs ! \r\n\r\nlancez le playbook my-first-playbook.yaml, trouvez l\'erreur et notez ce qu\'il manquait à ce playbook pour qu\'il fonctionne !',0,50,'Divers','standard','visible','{\"prerequisites\": [6]}',NULL,NULL),(13,'Header HaProxy','La configuration d\'HaProxy nous permet d\'ajouter des headers contenant certaines informations, le build en a ajouté un spécifique qui varie en fonction de l\'êtat des Conteneurs Wordpress\r\n\r\ntrouve ce header et entre le ici pour valider ce challenge !\r\n\r\nPS : Pour le forcer à changer, tu peux tenter d\'éteindre un des deux conteneneurs',0,30,'High availability','standard','visible','{\"prerequisites\": [4, 5, 6, 7, 9]}',NULL,NULL),(14,'Hash de la configuration','Pour vérifier que la configuration présente dans le Wordpress est là bonne, nous avons besoin que vous nous transmettiez le hash (sha256) du fichier wp-config.php présent dans le conteneur WordPress',0,25,'Divers','standard','visible','{\"prerequisites\": [4, 5, 6, 7]}',NULL,NULL);
 /*!40000 ALTER TABLE `challenges` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -198,7 +198,7 @@ CREATE TABLE `config` (
 
 LOCK TABLES `config` WRITE;
 /*!40000 ALTER TABLE `config` DISABLE KEYS */;
-INSERT INTO `config` VALUES (1,'ctf_version','3.6.0'),(2,'ctf_theme','core-beta'),(3,'dynamic_challenges_alembic_version','eb68f277ab61'),(4,'ctf_name','DevOpsCTF By Synapsys'),(5,'ctf_description',''),(6,'user_mode','users'),(7,'ctf_logo','9b2ce6dc116d93f2b369e89e3a5a0c3c/300x300.jpeg'),(8,'ctf_small_icon','8ab0e784ea1467c7c265703b8a178507/synapsys_sas_logo.png'),(9,'theme_header','<style id=\"theme-color\">\r\n:root {--theme-color: #7e0e0f;}\r\n.navbar{background-color: var(--theme-color) !important;}\r\n.jumbotron{background-color: var(--theme-color) !important;}\r\n</style>\r\n'),(10,'start',''),(11,'end',''),(12,'freeze',NULL),(13,'challenge_visibility','private'),(14,'registration_visibility','public'),(15,'score_visibility','private'),(16,'account_visibility','private'),(17,'verify_emails','false'),(18,'team_size',''),(19,'mail_server',NULL),(20,'mail_port',NULL),(21,'mail_tls',NULL),(22,'mail_ssl',NULL),(23,'mail_username',NULL),(24,'mail_password',NULL),(25,'mail_useauth',NULL),(26,'verification_email_subject','Confirm your account for {ctf_name}'),(27,'verification_email_body','Welcome to {ctf_name}!\n\nClick the following link to confirm and activate your account:\n{url}\n\nIf the link is not clickable, try copying and pasting it into your browser.'),(28,'successful_registration_email_subject','Successfully registered for {ctf_name}'),(29,'successful_registration_email_body','You\'ve successfully registered for {ctf_name}!'),(30,'user_creation_email_subject','Message from {ctf_name}'),(31,'user_creation_email_body','A new account has been created for you for {ctf_name} at {url}. \n\nUsername: {name}\nPassword: {password}'),(32,'password_reset_subject','Password Reset Request from {ctf_name}'),(33,'password_reset_body','Did you initiate a password reset on {ctf_name}? If you didn\'t initiate this request you can ignore this email. \n\nClick the following link to reset your password:\n{url}\n\nIf the link is not clickable, try copying and pasting it into your browser.'),(34,'password_change_alert_subject','Password Change Confirmation for {ctf_name}'),(35,'password_change_alert_body','Your password for {ctf_name} has been changed.\n\nIf you didn\'t request a password change you can reset your password here: {url}'),(36,'setup','1'),(37,'version_latest',NULL),(38,'next_update_check','1701208777'),(39,'theme_footer',''),(40,'theme_settings','');
+INSERT INTO `config` VALUES (1,'ctf_version','3.6.0'),(2,'ctf_theme','core-beta'),(3,'dynamic_challenges_alembic_version','eb68f277ab61'),(4,'ctf_name','DevOpsCTF By Synapsys'),(5,'ctf_description',''),(6,'user_mode','users'),(7,'ctf_logo','9b2ce6dc116d93f2b369e89e3a5a0c3c/300x300.jpeg'),(8,'ctf_small_icon','8ab0e784ea1467c7c265703b8a178507/synapsys_sas_logo.png'),(9,'theme_header','<style id=\"theme-color\">\r\n:root {--theme-color: #7e0e0f;}\r\n.navbar{background-color: var(--theme-color) !important;}\r\n.jumbotron{background-color: var(--theme-color) !important;}\r\n</style>\r\n'),(10,'start',''),(11,'end',''),(12,'freeze',NULL),(13,'challenge_visibility','private'),(14,'registration_visibility','public'),(15,'score_visibility','private'),(16,'account_visibility','private'),(17,'verify_emails','false'),(18,'team_size',''),(19,'mail_server',NULL),(20,'mail_port',NULL),(21,'mail_tls',NULL),(22,'mail_ssl',NULL),(23,'mail_username',NULL),(24,'mail_password',NULL),(25,'mail_useauth',NULL),(26,'verification_email_subject','Confirm your account for {ctf_name}'),(27,'verification_email_body','Welcome to {ctf_name}!\n\nClick the following link to confirm and activate your account:\n{url}\n\nIf the link is not clickable, try copying and pasting it into your browser.'),(28,'successful_registration_email_subject','Successfully registered for {ctf_name}'),(29,'successful_registration_email_body','You\'ve successfully registered for {ctf_name}!'),(30,'user_creation_email_subject','Message from {ctf_name}'),(31,'user_creation_email_body','A new account has been created for you for {ctf_name} at {url}. \n\nUsername: {name}\nPassword: {password}'),(32,'password_reset_subject','Password Reset Request from {ctf_name}'),(33,'password_reset_body','Did you initiate a password reset on {ctf_name}? If you didn\'t initiate this request you can ignore this email. \n\nClick the following link to reset your password:\n{url}\n\nIf the link is not clickable, try copying and pasting it into your browser.'),(34,'password_change_alert_subject','Password Change Confirmation for {ctf_name}'),(35,'password_change_alert_body','Your password for {ctf_name} has been changed.\n\nIf you didn\'t request a password change you can reset your password here: {url}'),(36,'setup','1'),(37,'version_latest',NULL),(38,'next_update_check','1702322738'),(39,'theme_footer',''),(40,'theme_settings','');
 /*!40000 ALTER TABLE `config` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -338,7 +338,7 @@ CREATE TABLE `flags` (
   PRIMARY KEY (`id`),
   KEY `flags_ibfk_1` (`challenge_id`),
   CONSTRAINT `flags_ibfk_1` FOREIGN KEY (`challenge_id`) REFERENCES `challenges` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -347,7 +347,7 @@ CREATE TABLE `flags` (
 
 LOCK TABLES `flags` WRITE;
 /*!40000 ALTER TABLE `flags` DISABLE KEYS */;
-INSERT INTO `flags` VALUES (1,2,'static','1328396400','case_insensitive');
+INSERT INTO `flags` VALUES (2,4,'static','1263164400',''),(3,5,'static','A commitment to innovation and sustainability','case_insensitive'),(4,6,'static','python-selinux','case_insensitive'),(6,7,'static','xHPPpPpf4H*MfL$nzD','case_insensitive'),(7,8,'static','Russell','case_insensitive'),(8,9,'static','c27299f39350','case_insensitive'),(9,10,'static','x-easter-egg-haproxy','case_insensitive'),(13,12,'static','\"','case_insensitive'),(14,11,'regex','([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})',''),(15,13,'static','x-server','case_insensitive'),(16,14,'static','73829195b5c09053ebbb306e7f44199d5a84e3c8b2f6c7b5796dcb068266663f','case_insensitive');
 /*!40000 ALTER TABLE `flags` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -368,7 +368,7 @@ CREATE TABLE `hints` (
   PRIMARY KEY (`id`),
   KEY `hints_ibfk_1` (`challenge_id`),
   CONSTRAINT `hints_ibfk_1` FOREIGN KEY (`challenge_id`) REFERENCES `challenges` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -377,6 +377,7 @@ CREATE TABLE `hints` (
 
 LOCK TABLES `hints` WRITE;
 /*!40000 ALTER TABLE `hints` DISABLE KEYS */;
+INSERT INTO `hints` VALUES (1,'standard',7,'Fait attention dans le dossier d\'ansible, il y a un dossier .git\n\nsi tu n\'arrive pas à voir les modifications, sudo peut peut-être te permettre de voir plus de chose...',10,'{\"prerequisites\": []}'),(2,'standard',7,'trouve la commande permettant de trouver les dernières modifications effectuée avec git',10,'{\"prerequisites\": [1]}'),(3,'standard',9,'Pour que la configuration soit valide elle doit comporter des éléments utilisé dans la configuration du service haproxy (haproxy.cfg)',10,'{\"prerequisites\": []}');
 /*!40000 ALTER TABLE `hints` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -429,7 +430,7 @@ CREATE TABLE `pages` (
   `format` varchar(80) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `route` (`route`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -438,7 +439,7 @@ CREATE TABLE `pages` (
 
 LOCK TABLES `pages` WRITE;
 /*!40000 ALTER TABLE `pages` DISABLE KEYS */;
-INSERT INTO `pages` VALUES (1,NULL,'index','<div class=\"row\">\n    <div class=\"col-md-6 offset-md-3\">\n        <img class=\"w-100 mx-auto d-block\" style=\"max-width: 500px;padding: 50px;padding-top: 14vh;\" src=\"/files/1a8782c9ef1730fdd461f050195f6cd4/Banniere_LinkedIn_Synapsys.png\" />\n        <h3 class=\"text-center\">\n            <p>A cool CTF platform from <a href=\"https://ctfd.io\">ctfd.io</a></p>\n            <p>Follow us on social media:</p>\n            <a href=\"https://twitter.com/ctfdio\"><i class=\"fab fa-twitter fa-2x\" aria-hidden=\"true\"></i></a>&nbsp;\n            <a href=\"https://facebook.com/ctfdio\"><i class=\"fab fa-facebook fa-2x\" aria-hidden=\"true\"></i></a>&nbsp;\n            <a href=\"https://github.com/ctfd\"><i class=\"fab fa-github fa-2x\" aria-hidden=\"true\"></i></a>\n        </h3>\n        <br>\n        <h4 class=\"text-center\">\n            <a href=\"admin\">Click here</a> to login and setup your CTF\n        </h4>\n    </div>\n</div>',0,NULL,NULL,'markdown');
+INSERT INTO `pages` VALUES (1,NULL,'index','<div class=\"row\">\n    <div class=\"col-md-6 offset-md-3\">\n        <img class=\"w-100 mx-auto d-block\" style=\"max-width: 500px;padding: 50px;padding-top: 14vh;\" src=\"/files/1a8782c9ef1730fdd461f050195f6cd4/Banniere_LinkedIn_Synapsys.png\" />\n        <h3 class=\"text-center\">\n            <p>A cool CTF platform from <a href=\"https://ctfd.io\">ctfd.io</a></p>\n            <p>Follow us on social media:</p>\n            <a href=\"https://twitter.com/ctfdio\"><i class=\"fab fa-twitter fa-2x\" aria-hidden=\"true\"></i></a>&nbsp;\n            <a href=\"https://facebook.com/ctfdio\"><i class=\"fab fa-facebook fa-2x\" aria-hidden=\"true\"></i></a>&nbsp;\n            <a href=\"https://github.com/ctfd\"><i class=\"fab fa-github fa-2x\" aria-hidden=\"true\"></i></a>\n        </h3>\n        <br>\n        <h4 class=\"text-center\">\n            <a href=\"admin\">Click here</a> to login and setup your CTF\n        </h4>\n    </div>\n</div>',0,NULL,NULL,'markdown'),(2,'Guacamole','guacamole','',0,0,0,'markdown');
 /*!40000 ALTER TABLE `pages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -472,7 +473,6 @@ CREATE TABLE `solves` (
 
 LOCK TABLES `solves` WRITE;
 /*!40000 ALTER TABLE `solves` DISABLE KEYS */;
-INSERT INTO `solves` VALUES (1,2,1,NULL);
 /*!40000 ALTER TABLE `solves` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -499,7 +499,7 @@ CREATE TABLE `submissions` (
   CONSTRAINT `submissions_ibfk_1` FOREIGN KEY (`challenge_id`) REFERENCES `challenges` (`id`) ON DELETE CASCADE,
   CONSTRAINT `submissions_ibfk_2` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE CASCADE,
   CONSTRAINT `submissions_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -508,7 +508,6 @@ CREATE TABLE `submissions` (
 
 LOCK TABLES `submissions` WRITE;
 /*!40000 ALTER TABLE `submissions` DISABLE KEYS */;
-INSERT INTO `submissions` VALUES (1,2,1,NULL,'82.66.189.83','1328396400','correct','2023-11-21 13:52:14.978231');
 /*!40000 ALTER TABLE `submissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -649,7 +648,7 @@ CREATE TABLE `tracking` (
   PRIMARY KEY (`id`),
   KEY `tracking_ibfk_1` (`user_id`),
   CONSTRAINT `tracking_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -658,7 +657,7 @@ CREATE TABLE `tracking` (
 
 LOCK TABLES `tracking` WRITE;
 /*!40000 ALTER TABLE `tracking` DISABLE KEYS */;
-INSERT INTO `tracking` VALUES (1,NULL,'82.66.189.83',1,'2023-11-28 09:56:28.324195'),(2,NULL,'82.66.189.83',2,'2023-11-21 13:06:35.912725'),(3,NULL,'109.222.43.255',3,'2023-11-24 15:54:48.801640'),(4,NULL,'82.66.189.83',4,'2023-11-21 13:47:56.073153');
+INSERT INTO `tracking` VALUES (1,NULL,'82.66.189.83',1,'2023-12-11 11:24:44.409144');
 /*!40000 ALTER TABLE `tracking` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -724,7 +723,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `oauth_id` (`oauth_id`),
   KEY `team_id` (`team_id`),
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -733,7 +732,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,NULL,'admin','$bcrypt-sha256$v=2,t=2b,r=12$FXNVR.Bn.qpkLlh6cJsxb.$iUaQLpFXeePECxGaFmsRnqKipMsldz6','admin@mail.co','admin',NULL,NULL,NULL,NULL,NULL,1,0,0,NULL,'2023-11-21 12:23:44.918638',NULL),(2,NULL,'tbarbay','$bcrypt-sha256$v=2,t=2b,r=12$IfwQEyN6.V7yGtp3LnwMvu$9EDfa/eVM6YKUC7towQpuQt7IQsLnHy','tbarby@mail.com','user',NULL,NULL,NULL,NULL,NULL,0,0,0,NULL,'2023-11-21 12:51:08.442961',NULL),(3,NULL,'toni','$bcrypt-sha256$v=2,t=2b,r=12$1FdP2y0x5S9REm/GQjRkde$UBEF4b9MjCdom4zomwnTRJO1CHR91M6','toni@outlook.com','user',NULL,NULL,NULL,NULL,NULL,0,0,0,NULL,'2023-11-21 13:07:31.764273',NULL),(4,NULL,'barlox','$bcrypt-sha256$v=2,t=2b,r=12$tRKMqTYEPSUaG79QmDBaAO$KnPfQGM6gOHMkYAlINFyUePBQEHiYLW','barlox@mail.co','user',NULL,NULL,NULL,NULL,NULL,0,0,0,NULL,'2023-11-21 13:07:31.908922',NULL);
+INSERT INTO `users` VALUES (1,NULL,'admin','$bcrypt-sha256$v=2,t=2b,r=12$19LVNlGSJq21F2s/2pdbqO$C6JlM7Wh2dnV5VUwf7I7Q9uDTPht2xC','admin@mail.co','admin',NULL,NULL,NULL,NULL,NULL,1,0,0,NULL,'2023-11-21 12:23:44.918638',NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -746,4 +745,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-28 10:00:42
+-- Dump completed on 2023-12-11 11:36:33
