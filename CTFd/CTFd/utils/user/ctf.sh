@@ -8,7 +8,7 @@ fi
 
 # Vérifier le nombre d'arguments
 if [ "$#" -ne 2 ]; then
-    echo "Usage: $0 <nombre_de_machines_virtuelles> <mot_de_passe>"
+    echo "Usage: $0 <nom d'utilisateur> <mot_de_passe>"
     exit 1
 fi
 
@@ -22,12 +22,12 @@ echo "La machine virtuelle $vm_name a été créée avec succès."
 
 # Attendre que la machine démarre normalement, if uplink -> on avance
 lxc_ip="$(lxc list | grep $vm_name | egrep -o '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')"
-    while [ -z $lxc_ip ]
-    do
-        lxc_ip="$(lxc list | grep $vm_name | egrep -o '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')"
-        sleep 0.5
-    done
-    echo "La machine a correctement démarré, ip récupérée"
+while [ -z $lxc_ip ]
+do
+    lxc_ip="$(lxc list | grep $vm_name | egrep -o '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')"
+    sleep 0.5
+done
+echo "La machine a correctement démarré, ip récupérée"
 
 # Personnalisation de l'instance pour l'utilisateur
     lxc exec $vm_name -- useradd -m -g docker -s /bin/bash -p "$(openssl passwd -1 $password)" $username
