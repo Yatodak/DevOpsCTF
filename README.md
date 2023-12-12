@@ -1,122 +1,28 @@
-fIRST YOU NEED TO DOWNLOAD THE FILES FROM THE GITHUB :
-https://github.com/Yatodak/DevOpsCTF
+# DevOps Themed Capture the Flag By Synapsys
+![image](https://github.com/Yatodak/DevOpsCTF/assets/57355439/6502f1e1-8035-4d53-a593-f8ce35185ac6)
+
+## Introduction
+
+We created based on other software a Capture the Flag with the DevOps theme wich is not a very trendy
+So as we work in a DevOps Team as consultant we created one within our idle time between contracts to play with our coworkers
+
+We decided to share our work, might not be perfect to be honest because we're newbies for a lot of technologies used this project and we're just out of school this year !
+We're going to improve this work when we have the time to do it so don't expect regular updates, but we're happy to ear your issues and advices related to this project and add the improvements you may propose if they're worth it !
 
 
-GUACAMOLE SERVER :
+## Requirements
 
-INSTALL ALL DEPENDENCIES :
-# sudo apt install -y dialog
-# sudo apt install -y libcairo2-dev libjpeg62-dev libpng-dev libtool-bin uuid-dev libpango1.0-dev libssh2-1-dev libssl-dev
-# sudo apt install -y libjpeg-turbo8-dev make unzip
-# sudo apt install -y openjdk-19-jdk
-
-EXTRACT AND COPY THE GUACAMOLE FOLDER IN /etc
-# sudo unzip guacamole-config.zip -d /etc
+1. May Work on any debian based Distro (tested on Ubuntu 22.04)
+2. Full access to Sudo
+3. On the Host
+  1. Another disk without any data (gonna be formated to be used by lxc with ZFS)
+  2. The lxc image exported of your environment in tar.gz archive format  
 
 
-NOW EXTRACT, BUILD AND INSTALL GUACAMOLE
-# tar xzf guacamole-server-1.5.3.tar.gz
-# cd guacamole-server-1.5.3
-# ./configure --with-init-dir=/etc/init.d
-# sudo make
-# sudo make install
-# sudo ldconfig
-# sudo systemctl daemon-reload
-# sudo systemctl enable --now guacd
+## Installation
 
-
-######################################################################################################################################
-
-GUACAMOLE GUI :
-
-SETUP THE MARIADB DATABASE
-# sudo apt install -y mariadb-server
-# sudo systemctl enable --now mariadb
-
-## Enter the next command in one copy/paste in a notepadd and change the root password
-sudo mariadb <<_EOF_
-SET PASSWORD FOR 'root'@'localhost' = PASSWORD('ChangeMe');
-FLUSH PRIVILEGES;
-CREATE DATABASE guacamole_db;
-_EOF_
-
-## Let's init the Guacamole DB
-cat schema/*.sql | sudo mysql guacamole_db
-sudo mysql <<_EOF_
-CREATE USER 'guacamole_user'@'localhost' IDENTIFIED BY 'ChangeMe';
-GRANT SELECT,INSERT,UPDATE,DELETE ON guacamole_db.* TO 'guacamole_user'@'localhost';
-FLUSH PRIVILEGES;
-_EOF_
-
-## Modify the password in /etc/guacamole/guacamole.properties
-Modify the mysql-password with the password you set for the guacamole_user
-
-UNZIP THE TOMCAT IN /opt FOLDER
-# unzip tomcat.zip && sudo mv tomcat /opt
-
-
-FIRST SET THE UMASK :
-# umask 022
-
-YOU NEED TO CREATE A USER CALLED TOMCAT :
-# sudo useradd -r -s /usr/sbin/nologin tomcat
-
-ADD A LOG FOLDER FOR TOMCAT :
-# sudo mkdir /var/log/tomcat
-# sudo chown tomcat:adm /var/log/tomcat
-# sudo chmod 750 /var/log/tomcat
-# sudo chmod g+s /var/log/tomcat
-
-
-REPLACE THE CATALINE LOGS FOLDER WITH THE NEW LOGS FOLDER :
-# sudo rm -rf /opt/tomcat/logs
-# sudo ln -s /var/log/tomcat /opt/tomcat/logs
-
-NOW CONFIGURE FILE PERMISSIONS :
-# sudo su -
-# sudo chown -R root:tomcat /opt/tomcat
-# sudo chmod g+r /opt/tomcat/conf/*
-# sudo chmod g+w /opt/tomcat/temp /opt/tomcat/work
-# exit
-
-
-NOW VERIFY THAT TOMCAT ONLY AS WRITE ACCESS TO TEMP, WORK AND LOGS AND REMOVE ALL OTHER USER PERMISSIONS TO TOMCAT FOLDER :
-# sudo chmod -R o-rwx /opt/tomcat/
-
-
-ADD THE tomcat.service FILE IN /etc/systemd/system/
-## Return to cloned git folder
-# sudo cp tomcat.service /etc/systemd/system/
-# sudo systemctl daemon-reload
-# sudo systemctl enable --now tomcat
-
-
-TO RUN, TOMCAT NEED THE JAVA_HOME VARIABLE POINTING TO THE RIGHT JDK FOLDER
-BY DEFAULT THE FOLDER IS SET IN THE SERVICE FILE AT /usr/lib/jvm/java-19-openjdk-amd64
-
-NOW FOR CTFD
-### Unzip and copy ctfd folder in /opt
-# sudo cp -r CTFd /opt
-# sudo chown -R root:root /opt/CTFd
-
-### Setup Database for CTFd
-sudo mariadb <<_EOF_
-CREATE DATABASE ctfd;
-CREATE USER 'ctfduser'@'localhost' IDENTIFIED BY 'ChangeMe';
-GRANT USAGE ON *.* TO 'ctfduser'@'localhost' IDENTIFIED BY 'ctfd';
-GRANT ALL privileges ON ctfd.* TO 'ctfduser'@'localhost';FLUSH PRIVILEGES;
-_EOF_
-
-### Install the CTFd dependencies
-# sudo apt install -y gunicorn build-essential  python-dev-is-python3 python3-pip libffi-dev
-# sudo -H pip install -r /opt/CTFd/requirements.txt
-# sudo -H pip install -U pyopenssl cryptography
-# sudo -H pip install guacamole-api-wrapper
-# sudo mv ctfd.service /etc/systemd/system
-# sudo systemctl daemon-reload && sudo systemctl enable --now ctfd
-
-
-
-IF YOU HAVE A DIFFERENT FOLDER, YOU NEED TO MODIFY THE ENVIRONEMENT VARIABLE IN THE tomcat.service FILE
-
-
+1. Copy the repo
+2. Start the init.sh script `./init.sh` wich will setup everything needed to work (CTFd interface, Guacamole, LXC, Nginx as reverse proxy)
+   you just need to answer the prompt when needed
+3. Connect to the ServerName you entered in the init script
+4. Start playing or building your own game
