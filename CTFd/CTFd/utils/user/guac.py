@@ -1,13 +1,5 @@
 import argparse
 
-# Checking if Guacamole Wrapper is installed
-try:
-    import guacamole
-except ImportError:
-    print("[Error] Python module guacamole-api-wrapper need to be installed")
-    print("[Error] Please install : pip install guacamole-api-wrapper in order to run this script")
-    quit()
-
 # Parameters configuration
 parser = argparse.ArgumentParser(
     description="Needed Argument", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -29,25 +21,38 @@ args = parser.parse_args()
 config = vars(args)
 
 
-# Checking if all necessary parameters are set and there is no conflict
+# Checking if all necessary parameters as been set
 if args.delete and args.create:
     parser.error("Can't use --create with --delete.")
     quit()
+
 
 if args.create and (args.username is None or args.password is None):
     parser.error("--create requires --username and --password.")
     quit()
 
+
 if args.add_connection and (args.username is None and args.ip is None):
     parser.error("--add-connection require --ip and --username")
     quit()
+
 
 if args.delete_connection and (args.username is None and args.ip is None):
     parser.error("--delete-connection require --ip and --username")
     quit()
 
+
 if args.delete and args.username is None:
     parser.error("--delete require --username.")
+    quit()
+
+
+# Checking if Guacamole Wrapper is installed
+try:
+    import guacamole
+except ImportError:
+    print("[Error] Python module guacamole-api-wrapper need to be installed")
+    print("[Error] Please install : pip install guacamole-api-wrapper in order to run this script")
     quit()
 
 
@@ -79,19 +84,15 @@ if args.delete:
 
 # Connection creation
 if args.add_connection:
-
     userdetails = session.detail_user(args.username)
     try:
         connection_parameters = {'password': args.password, 'username': args.username,
                                  'command': '/bin/bash', 'hostname': args.ip, 'port': 22}
-
         addedconnection = session.manage_connection(
             'ssh', f"DevOpsCTF-{args.username}", parameters=connection_parameters)
-
         print("### Added Connection Info :", addedconnection)
         connection_id = addedconnection['identifier']
         print(connection_id)
-
         # Adding Permission to user
         perm = session.update_connection_permissions(
             args.username, connection_id, 'add', 'connection')
